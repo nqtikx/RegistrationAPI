@@ -1,164 +1,64 @@
-# WhiteBird Registration API Guide
+# WhiteBird Registration API
 
-## Purpose
+This API is used for merchant backend-to-backend registration and KYC-related actions.
+Use these endpoints to register clients, update legal agreements, and generate SDK tokens without exposing merchant secrets in frontend code.
 
-This guide describes Backend-to-Backend registration APIs for partners that act as an identification agent for WhiteBird users.
+> BASE_URL https://api.dev.wbdevel.net
 
-If the partner already has the required personal identity document (PID) data, WhiteBird can receive this data from the partner instead of collecting it directly from the user.
+## 1) Full KYC Registration
 
-## API flows
+### Step 1. Register client with full KYC data
+Use this endpoint to register a client with full PID/KYC profile data from the merchant side.
+Use the response `id` as the WhiteBird `clientId` for status checks, crypto test flow, and token generation.
 
-| Flow | Endpoint sequence | Use case |
-|---|---|---|
-| Full KYC registration | `POST /api/v2/kyc/merchant/client/register` | Partner sends complete user KYC/PID data to WhiteBird |
-| Client status check | `POST /api/v2/kyc/merchant/client/status` | Partner checks whether the client is allowed to transact |
-| Crypto test for BY residents | `GET /api/v2/kyc/merchant/client/crypto-test` -> `POST /api/v2/kyc/merchant/client/crypto-test` | Endpoint returns test questions for residents that require crypto test |
-| SDK light registration | `POST /api/v2/auth/merchant/client/register` | Partner creates a client without full KYC data |
-| SDK token generation | `POST /api/v2/auth/merchant/client/token/generate` | Partner receives SDK access tokens for a registered client |
+**POST** `/api/v2/kyc/merchant/client/register`
 
-## 1. Full KYC registration
+**Headers**
+- `x-api-key: {{x-api-key}}`
 
-### `POST /api/v2/kyc/merchant/client/register`
+`ClientManagementService.registerClient()` updates CRM as processed in this flow only when all three flags are `true`:
+- `agreedWithOffer`
+- `notUSTaxPayer`
+- `exchangeInPersonalInterests`
 
-Creates a WhiteBird client from a complete KYC/PID data set.
-
-### Request fields
-
-#### Contact and partner identifiers
-
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `email` | `string` | Yes | User email. Must not be empty |
-| `phone` | `string` | Yes | User phone. Must not be empty |
-| `externalClientId` | `string` | No | User identifier in partner system |
-
-#### Personal data
-
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `gender` | `Gender` | Yes | User gender. See [Data dictionaries](#data-dictionaries) |
-| `firstNameRu` | `string` | Yes | First name in Russian/Cyrillic form |
-| `lastNameRu` | `string` | Yes | Last name in Russian/Cyrillic form |
-| `patronymicRu` | `string` | Yes | Patronymic/middle name in Russian/Cyrillic form. Must not be empty |
-| `firstName` | `string` | Yes | First name in Latin form. Must not be empty |
-| `lastName` | `string` | Yes | Last name in Latin form. Must not be empty |
-| `placeOfBirth` | `string` | Yes | Place of birth |
-| `birthDate` | `string` | No | Date of birth in `YYYY-MM-DD` format |
-| `nationality` | `CountryCode` | Yes | Nationality/citizenship code |
-| `residence` | `CountryCode` | Yes | Country of residence / country related to issued PID |
-
-#### Identity document
-
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `identityDocType` | `DocType` | Yes | Identity document type |
-| `identityDocIssueDate` | `string` | No | Issue date in `YYYY-MM-DD` format |
-| `identityDocExpireDate` | `string` | No | Expiry date in `YYYY-MM-DD` format |
-| `identityDocNumber` | `string` | Yes | Identity document number / series and number |
-| `identityDocIssuer` | `string` | Yes | Authority that issued the document |
-| `personalNumber` | `string` | Conditional | Required when `registrationCountry` contains `112` (Belarus). Optional for other countries |
-
-#### Registration address
-
-Registration address format differs by country. Fill in values that correspond to the registration country format.
-
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `registrationCountry` | `CountryCode` | Yes | Registration country |
-| `registrationRegion` | `string` | Yes | Registration region/state |
-| `residenceDistrict` | `string` | Yes | Registration district. Mapped internally to `registrationDistrict` |
-| `registrationCity` | `string` | Yes | City/locality/settlement |
-| `registrationStreet` | `string` | Yes | Street |
-| `registrationHouseAndFlat` | `string` | Yes | House, building and apartment |
-| `postCode` | `string` | Yes | Postal code. Must not be empty |
-
-#### Consents and flags
-
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `notUSTaxPayer` | `boolean` | No | Confirms that user is not a U.S. taxpayer |
-| `agreedWithOffer` | `boolean` | No | Confirms user agreement with WhiteBird offer |
-| `exchangeInPersonalInterests` | `boolean` | No | Confirms exchange is performed in user personal interests |
-| `files` | `string[]` | No | Optional file references saved with KYC client data |
-| `isPotentialDrop` | `boolean` | No | Optional risk flag passed to CRM processing |
-
-### Request example (Belarus user)
-
+**Request**
 ```json
 {
-  "email": "test.user.testov+15112024@ya.ru",
+  "email": "test.user@example.com",
   "phone": "+375297778899",
-  "gender": "муж",
   "firstNameRu": "Джон",
   "lastNameRu": "До",
   "patronymicRu": "Иванович",
   "firstName": "John",
   "lastName": "Doe",
+  "residence": "112",
   "placeOfBirth": "Republic of Belarus, city Minsk",
   "birthDate": "1994-01-05",
-  "nationality": "112",
-  "residence": "112",
-  "identityDocType": "3",
-  "identityDocIssueDate": "2020-01-02",
-  "identityDocExpireDate": "2030-01-02",
-  "identityDocNumber": "HB2129425",
-  "identityDocIssuer": "Central ROVD of Minsk",
-  "personalNumber": "3029120H059PB9",
   "registrationCountry": "112",
   "registrationRegion": "Minsk region",
   "residenceDistrict": "-",
   "registrationCity": "Minsk",
   "registrationStreet": "Kriptomanov street",
   "registrationHouseAndFlat": "30/1-3",
-  "postCode": "220000",
-  "notUSTaxPayer": true,
-  "agreedWithOffer": true,
-  "exchangeInPersonalInterests": true,
-  "externalClientId": "partner-client-123"
-}
-```
-
-### Request example (foreign passport)
-
-```json
-{
-  "email": "test.user.testov+15112024@ya.ru",
-  "phone": "-",
-  "gender": "жен",
-  "firstNameRu": "Джон",
-  "lastNameRu": "До",
-  "patronymicRu": "Иванович",
-  "firstName": "-",
-  "lastName": "-",
-  "placeOfBirth": "Russian Federation, Jewish Autonomous Region, Birobidzhan",
-  "birthDate": "1994-05-09",
-  "nationality": "643",
-  "residence": "643",
-  "identityDocType": "9",
+  "identityDocType": "3",
   "identityDocIssueDate": "2020-01-02",
   "identityDocExpireDate": "2030-01-02",
-  "identityDocNumber": "9992129425",
-  "identityDocIssuer": "MIA of Russia, Jewish Autonomous Region",
-  "registrationCountry": "643",
-  "registrationRegion": "Jewish Autonomous Region",
-  "residenceDistrict": "Smidovich district",
-  "registrationCity": "Nikolaevka settlement",
-  "registrationStreet": "Komsomolskaya street",
-  "registrationHouseAndFlat": "23-30",
-  "postCode": "-",
+  "identityDocNumber": "HB2129425",
+  "identityDocIssuer": "Central ROVD of Minsk",
+  "personalNumber": "3029120H059PB9",
+  "postCode": "220000",
+  "gender": "муж",
+  "nationality": "112",
   "notUSTaxPayer": true,
+  "exchangeInPersonalInterests": true,
   "agreedWithOffer": true,
-  "exchangeInPersonalInterests": true
+  "files": ["file-ref-1"],
+  "externalClientId": "partner-client-123",
+  "isPotentialDrop": false
 }
 ```
 
-### Response
-
-| Field | Type | Description |
-|---|---|---|
-| `id` | `string` | Registered WhiteBird client id |
-| `status` | `KycClientStatus` | Current KYC client status |
-
+**Response**
 ```json
 {
   "id": "0d58e7ec-0369-48d7-9804-90c6b23a52be",
@@ -166,67 +66,131 @@ Registration address format differs by country. Fill in values that correspond t
 }
 ```
 
-### Notes
+### Headers
 
-- Java validation requires all `@NotEmpty` fields from the tables above.
-- Date strings are parsed as ISO local dates (`YYYY-MM-DD`).
-- `personalNumber` is additionally validated for Belarus registration country (`112`).
-- If all consent flags are `true`, WhiteBird schedules CRM user update after registration.
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `x-api-key` | `string` | Yes | Authenticates merchant backend request for KYC registration endpoints. |
 
-## 2. Client status
+### Request
 
-### `POST /api/v2/kyc/merchant/client/status`
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `email` | `string` | Yes | Client email (`@NotEmpty`). |
+| `phone` | `string` | Yes | Client phone (`@NotEmpty`). |
+| `firstNameRu` | `string` | Yes | First name in Cyrillic (`@NotEmpty`). |
+| `lastNameRu` | `string` | Yes | Last name in Cyrillic (`@NotEmpty`). |
+| `patronymicRu` | `string` | Yes | Patronymic in Cyrillic (`@NotEmpty`). |
+| `firstName` | `string` | Yes | First name in Latin (`@NotEmpty`). |
+| `lastName` | `string` | Yes | Last name in Latin (`@NotEmpty`). |
+| `residence` | `string` | Yes | Residence country code (`@NotEmpty`). |
+| `placeOfBirth` | `string` | Yes | Place of birth (`@NotEmpty`). |
+| `birthDate` | `string` | No | Birth date in `YYYY-MM-DD` (mapped to `LocalDate`). |
+| `registrationCountry` | `string` | Yes | Registration country code (`@NotEmpty`). |
+| `registrationRegion` | `string` | Yes | Registration region/state (`@NotEmpty`). |
+| `residenceDistrict` | `string` | Yes | Registration district field (`@NotEmpty`). |
+| `registrationCity` | `string` | Yes | Registration city/locality (`@NotEmpty`). |
+| `registrationStreet` | `string` | Yes | Registration street (`@NotEmpty`). |
+| `registrationHouseAndFlat` | `string` | Yes | House/flat part of registration address (`@NotEmpty`). |
+| `identityDocType` | `string` | Yes | Identity document type (`@NotEmpty`). |
+| `identityDocIssueDate` | `string` | No | Document issue date string. |
+| `identityDocExpireDate` | `string` | No | Document expiry date string. |
+| `identityDocNumber` | `string` | Yes | Identity document number (`@NotEmpty`). |
+| `identityDocIssuer` | `string` | Yes | Identity document issuer (`@NotEmpty`). |
+| `personalNumber` | `string` | Conditional | Required when `registrationCountry` contains `112` (Belarus). |
+| `postCode` | `string` | Yes | Postal code (`@NotEmpty`). |
+| `gender` | `string` | Yes | Gender value (`@NotEmpty`), e.g. `муж`, `жен`. |
+| `nationality` | `string` | Yes | Nationality country code (`@NotEmpty`). |
+| `notUSTaxPayer` | `boolean` | No | Consent flag for non-US taxpayer declaration. |
+| `exchangeInPersonalInterests` | `boolean` | No | Consent flag for personal-interest exchange declaration. |
+| `agreedWithOffer` | `boolean` | No | Consent flag for WhiteBird public offer. |
+| `files` | `array of string` | No | Optional list of file references stored with client KYC data. |
+| `externalClientId` | `string` | No | Merchant-side external client identifier. |
+| `isPotentialDrop` | `boolean` | No | Optional risk marker propagated to CRM processing. |
 
-Returns current client status.
+### Response
 
-### Request fields
+| Name | Type | Description |
+| --- | --- | --- |
+| `id` | `string` | WhiteBird client id created/linked during registration. |
+| `status` | `string` | Client status after registration. Allowed values: `NOT_VERIFIED`, `PENDING`, `VERIFIED`, `FROZEN`, `ARREST`. |
 
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `clientId` | `string` | Yes | WhiteBird client id returned by registration |
+### Errors
 
-### Optional query parameters
+| Name | Code | Description |
+| --- | --- | --- |
+| `400 ValidationException` | BUSINESS | One or more required fields are missing/empty, or validation rules fail. |
+| `400 ValidationException` | BUSINESS | `personalNumber` is missing for Belarus registration country (`112`). |
+| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
+| `403 Forbidden` | HTTP | Merchant has no permission for this endpoint (`KYC_REGISTER_EP`). |
 
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `externalUserId` | `string` | No | Partner-side client id for additional client lookup |
+## 2) Client Status
 
-### Request example
+### Step 2. Check registered client status
+Use this endpoint to fetch current KYC status for a registered client.
+Use the response to decide whether client can proceed to operations or must complete additional verification.
 
+**POST** `/api/v2/kyc/merchant/client/status`
+
+**Headers**
+- `x-api-key: {{x-api-key}}`
+
+**Request**
 ```json
 {
   "clientId": "0d58e7ec-0369-48d7-9804-90c6b23a52be"
 }
 ```
 
-### Response example
-
+**Response**
 ```json
 "VERIFIED"
 ```
 
-## 3. Crypto test
+### Headers
 
-For non-resident clients this flow returns `cryptoTestRequired=false` and does not update test answers.
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `x-api-key` | `string` | Yes | Authenticates merchant backend request for status checks. |
 
-### `GET /api/v2/kyc/merchant/client/crypto-test?clientId={clientId}`
+### Params
 
-Returns whether the crypto test is required and, if required, returns the questions.
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `externalUserId` | `string` | No | Merchant-side external id used as optional additional client validation key. |
 
-### Query parameters
+### Request
 
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `clientId` | `string` | Yes | WhiteBird client id |
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `clientId` | `string` | Yes | WhiteBird client id returned by registration. |
 
-### Optional headers
+### Response
 
-| Header | Required | Description |
-|---|---|---|
-| `externalClientId` | No | Partner-side client id for additional client lookup |
+| Name | Type | Description |
+| --- | --- | --- |
+| `status` | `string` | KYC status string from backend. Possible values include `NOT_VERIFIED`, `PENDING`, `VERIFIED`, `FROZEN`, `ARREST`. |
 
-### Response example: test is required
+### Errors
 
+| Name | Code | Description |
+| --- | --- | --- |
+| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
+| `403 Forbidden` | HTTP | Merchant has no permission for this endpoint (`KYC_GET_CLIENT_STATUS_EP`). |
+
+## 3) Crypto Test
+
+### Step 3. Get crypto-test requirements/questions
+Use this endpoint to determine whether the client must pass crypto test and to fetch questions for residents where test is required.
+Use the response to render the test UI or skip test step if `cryptoTestRequired=false`.
+
+**GET** `/api/v2/kyc/merchant/client/crypto-test?clientId={{clientId}}`
+
+**Headers**
+- `x-api-key: {{x-api-key}}`
+- `externalClientId: {{externalClientId}}` (optional)
+
+**Response**
 ```json
 {
   "cryptoTestRequired": true,
@@ -246,36 +210,56 @@ Returns whether the crypto test is required and, if required, returns the questi
 }
 ```
 
-### Response example: test is not required
+### Headers
 
-```json
-{
-  "cryptoTestRequired": false
-}
-```
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `x-api-key` | `string` | Yes | Authenticates merchant backend request for crypto test endpoints. |
+| `externalClientId` | `string` | No | Merchant-side external client id for additional client lookup. |
 
-### `POST /api/v2/kyc/merchant/client/crypto-test`
+### Params
 
-Submits answers to the crypto test.
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `clientId` | `string` | Yes | WhiteBird client id. |
 
-### Request fields
+### Request
 
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `clientId` | `string` | Yes | WhiteBird client id |
-| `answers` | `object` | Yes | Map of question id to answer id. Example: `{ "1": 10 }` |
-| `notUSTaxPayer` | `boolean` | No | Can be set together with test submission |
-| `agreedWithOffer` | `boolean` | No | Can be set together with test submission |
-| `exchangeInPersonalInterests` | `boolean` | No | Can be set together with test submission |
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `body` | `none` | - | GET endpoint without request body. |
 
-### Optional headers
+### Response
 
-| Header | Required | Description |
-|---|---|---|
-| `externalClientId` | No | Partner-side client id for additional client lookup |
+| Name | Type | Description |
+| --- | --- | --- |
+| `cryptoTestRequired` | `boolean` | Indicates whether client must pass crypto test. |
+| `questions` | `array of objects` | Test questions list, returned when `cryptoTestRequired=true`. |
+| `questions[].id` | `string` | Question identifier. |
+| `questions[].title` | `string` | Question text. |
+| `questions[].answers` | `array of objects` | Answer options list. |
+| `questions[].answers[].id` | `number` | Answer identifier (`Long` serialized as number). |
+| `questions[].answers[].title` | `string` | Answer text. |
+| `questions[].answers[].correct` | `boolean` | Correct-answer marker in backend response payload. |
 
-### Request example
+### Errors
 
+| Name | Code | Description |
+| --- | --- | --- |
+| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
+| `403 Forbidden` | HTTP | Merchant has no permission for this endpoint (`KYC_CRYPTO_TEST_EP`). |
+
+### Step 4. Submit crypto-test answers
+Use this endpoint to submit crypto test answers and optionally update legal agreement flags in the same call.
+Use the response `accepted` to detect whether the update was applied (`true`) or skipped for non-resident clients (`false`).
+
+**POST** `/api/v2/kyc/merchant/client/crypto-test`
+
+**Headers**
+- `x-api-key: {{x-api-key}}`
+- `externalClientId: {{externalClientId}}` (optional)
+
+**Request**
 ```json
 {
   "clientId": "0d58e7ec-0369-48d7-9804-90c6b23a52be",
@@ -292,37 +276,56 @@ Submits answers to the crypto test.
 }
 ```
 
-### Response example
-
+**Response**
 ```json
 {
   "accepted": true
 }
 ```
 
-### Notes
+### Headers
 
-- If the client is not a Belarus resident, response is `{ "accepted": false }` and no test update is needed.
-- Wrong answers cause validation error: `Wrong answers to crypto test`.
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `x-api-key` | `string` | Yes | Authenticates merchant backend request for crypto test endpoints. |
+| `externalClientId` | `string` | No | Merchant-side external client id for additional client lookup. |
 
-## 4. SDK light registration
+### Request
 
-### `POST /api/v2/auth/merchant/client/register`
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `clientId` | `string` | Yes | WhiteBird client id. |
+| `answers` | `object` | Yes | Map of question id to answer id (`Map<Long, Long>`). |
+| `notUSTaxPayer` | `boolean` | No | Optional consent update flag. |
+| `agreedWithOffer` | `boolean` | No | Optional offer-agreement update flag. |
+| `exchangeInPersonalInterests` | `boolean` | No | Optional personal-interests update flag. |
 
-Registers a merchant client without sending full KYC data.
+### Response
 
-### Request fields
+| Name | Type | Description |
+| --- | --- | --- |
+| `accepted` | `boolean` | `true` when crypto test is applied; `false` for non-resident clients. |
 
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `email` | `string` | Yes | User email. Must not be empty |
-| `phone` | `string` | Yes | User phone. Must not be empty |
-| `externalClientId` | `string` | No | User identifier in partner system |
-| `agreedWithOffer` | `boolean` | No | Whether user agreed with WhiteBird offer during registration |
-| `merchantId` | `string` | No | Used by OTP registration flow; not required for B2B `x-api-key` flow |
+### Errors
 
-### Request example
+| Name | Code | Description |
+| --- | --- | --- |
+| `400 ValidationException` | BUSINESS | Wrong answers to crypto test. |
+| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
+| `403 Forbidden` | HTTP | Merchant has no permission for this endpoint (`KYC_CRYPTO_TEST_EP`). |
 
+## 4) SDK Light Registration
+
+### Step 5. Register client with minimal data (non-full KYC)
+Use this endpoint when merchant has only minimal client data and full KYC profile is not provided at registration time.
+Use the response `id` as `clientId` for token generation and subsequent KYC-related actions.
+
+**POST** `/api/v2/auth/merchant/client/register`
+
+**Headers**
+- `x-api-key: {{x-api-key}}`
+
+**Request**
 ```json
 {
   "email": "client@example.com",
@@ -332,8 +335,7 @@ Registers a merchant client without sending full KYC data.
 }
 ```
 
-### Response example
-
+**Response**
 ```json
 {
   "id": "0d58e7ec-0369-48d7-9804-90c6b23a52be",
@@ -341,21 +343,49 @@ Registers a merchant client without sending full KYC data.
 }
 ```
 
-## 5. SDK token generation
+### Headers
 
-### `POST /api/v2/auth/merchant/client/token/generate`
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `x-api-key` | `string` | Yes | Authenticates merchant backend request for auth registration endpoint. |
 
-Generates access tokens for merchant client.
+### Request
 
-### Request fields
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `email` | `string` | Yes | Client email (`@NotEmpty`). |
+| `phone` | `string` | Yes | Client phone (`@NotEmpty`). |
+| `merchantId` | `string` | No | Optional merchant id used in OTP registration flow, not required for backend `x-api-key` flow. |
+| `externalClientId` | `string` | No | Merchant-side external client identifier. |
+| `agreedWithOffer` | `boolean` | No | Offer-agreement flag passed to registration service. |
 
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `clientId` | `string` | Yes | WhiteBird client id |
-| `externalClientId` | `string` | No | User identifier in partner system |
+### Response
 
-### Request example
+| Name | Type | Description |
+| --- | --- | --- |
+| `id` | `string` | WhiteBird client id created/linked in merchant context. |
+| `status` | `string` | Initial client status (typically `NOT_VERIFIED`). |
 
+### Errors
+
+| Name | Code | Description |
+| --- | --- | --- |
+| `400 ValidationException` | BUSINESS | Required registration field validation failed. |
+| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
+| `403 Forbidden` | HTTP | Merchant has no permission for this endpoint (`AUTH_REGISTER_EP`). |
+
+## 5) SDK Token Generation
+
+### Step 6. Generate SDK access tokens
+Use this endpoint to issue SDK access and refresh tokens for an existing merchant client.
+Use the response tokens to initialize SDK session for the resolved `clientId`.
+
+**POST** `/api/v2/auth/merchant/client/token/generate`
+
+**Headers**
+- `x-api-key: {{x-api-key}}`
+
+**Request**
 ```json
 {
   "clientId": "0d58e7ec-0369-48d7-9804-90c6b23a52be",
@@ -363,15 +393,7 @@ Generates access tokens for merchant client.
 }
 ```
 
-### Response fields
-
-| Field | Type | Description |
-|---|---|---|
-| `token` | `string` | Access token |
-| `refreshToken` | `string` | Refresh token, can be `null` |
-
-### Response example
-
+**Response**
 ```json
 {
   "token": "access-token",
@@ -379,53 +401,148 @@ Generates access tokens for merchant client.
 }
 ```
 
-## 6. Optional KYC support endpoints
+### Headers
 
-### `POST /api/v2/kyc/merchant/client/agreed-offer`
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `x-api-key` | `string` | Yes | Authenticates merchant backend request for token generation endpoint. |
 
-Updates consent flags for an already registered client.
+### Request
 
-Optional header: `externalClientId`.
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `clientId` | `string` | Yes | WhiteBird client id to generate token for. |
+| `externalClientId` | `string` | No | Merchant-side external client identifier used for additional client validation. |
 
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `clientId` | `string` | Yes | WhiteBird client id |
-| `notUSTaxPayer` | `boolean` | No | Confirms user is not a U.S. taxpayer |
-| `agreedWithOffer` | `boolean` | No | Confirms user agreement with WhiteBird offer |
-| `exchangeInPersonalInterests` | `boolean` | No | Confirms exchange is performed in user personal interests |
+### Response
 
-Response:
+| Name | Type | Description |
+| --- | --- | --- |
+| `token` | `string` | OAuth access token for SDK session. |
+| `refreshToken` | `string \| null` | OAuth refresh token; can be `null`. |
 
+### Errors
+
+| Name | Code | Description |
+| --- | --- | --- |
+| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
+| `403 Forbidden` | HTTP | Merchant has no permission for this endpoint (`AUTH_GET_TOKEN_EP`). |
+
+## 6) Optional KYC Support Endpoints
+
+### Step 7. Update agreement flags for existing client
+Use this endpoint to set legal agreement flags for an already registered client.
+Use it when agreement data is collected after initial registration and must be persisted in KYC/CRM flows.
+
+**POST** `/api/v2/kyc/merchant/client/agreed-offer`
+
+**Headers**
+- `x-api-key: {{x-api-key}}`
+- `externalClientId: {{externalClientId}}` (optional)
+
+**Request**
+```json
+{
+  "clientId": "0d58e7ec-0369-48d7-9804-90c6b23a52be",
+  "notUSTaxPayer": true,
+  "agreedWithOffer": true,
+  "exchangeInPersonalInterests": true
+}
+```
+
+**Response**
 ```json
 "OK"
 ```
 
-### `POST /api/v2/kyc/merchant/client/personal-number`
+### Headers
 
-Returns stored personal number for a registered client.
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `x-api-key` | `string` | Yes | Authenticates merchant backend request for agreement update endpoint. |
+| `externalClientId` | `string` | No | Merchant-side external client identifier used for additional client lookup. |
 
-Optional header: `externalClientId`.
+### Request
 
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `clientId` | `string` | Yes | WhiteBird client id |
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `clientId` | `string` | Yes | WhiteBird client id. |
+| `notUSTaxPayer` | `boolean` | No | Non-US taxpayer agreement flag. |
+| `agreedWithOffer` | `boolean` | No | WhiteBird public offer agreement flag. |
+| `exchangeInPersonalInterests` | `boolean` | No | Exchange-in-personal-interests agreement flag. |
 
-Response:
+### Response
 
+| Name | Type | Description |
+| --- | --- | --- |
+| `result` | `string` | Constant string response: `OK`. |
+
+### Errors
+
+| Name | Code | Description |
+| --- | --- | --- |
+| `400 ValidationException` | BUSINESS | Client was not found for provided identifier. |
+| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
+| `403 Forbidden` | HTTP | Merchant has no permission for this endpoint (`KYC_AGREED_OFFER_EP`). |
+
+### Step 8. Get personal number for client
+Use this endpoint to retrieve personal number stored for an already registered client.
+Use the response for compliance flows where personal number retrieval is required by merchant process.
+
+**POST** `/api/v2/kyc/merchant/client/personal-number`
+
+**Headers**
+- `x-api-key: {{x-api-key}}`
+- `externalClientId: {{externalClientId}}` (optional)
+
+**Request**
+```json
+{
+  "clientId": "0d58e7ec-0369-48d7-9804-90c6b23a52be"
+}
+```
+
+**Response**
 ```json
 {
   "personalNumber": "3029120H059PB9"
 }
 ```
 
-## Data dictionaries
+### Headers
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `x-api-key` | `string` | Yes | Authenticates merchant backend request for personal-number endpoint. |
+| `externalClientId` | `string` | No | Merchant-side external client identifier used for additional client lookup. |
+
+### Request
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `clientId` | `string` | Yes | WhiteBird client id. |
+
+### Response
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `personalNumber` | `string \| null` | Personal number returned from WB CRM profile. |
+
+### Errors
+
+| Name | Code | Description |
+| --- | --- | --- |
+| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
+| `403 Forbidden` | HTTP | Merchant has no permission for this endpoint (`KYC_GET_PERSONAL_NUMBER_EP`). |
+
+## Data Dictionaries
 
 ```typescript
-type Gender = string // Examples used in existing integrations: "муж", "жен"
+type Gender = string // examples in existing integrations: "муж", "жен"
 
-type CountryCode = string // Numeric ISO 3166-1 country code, e.g. "112" for Belarus, "643" for Russia
+type CountryCode = string // numeric ISO 3166-1 code, e.g. "112", "643"
 
-type DocType = string // Examples used in existing integrations: "3" (BY passport), "9" (foreign passport)
+type DocType = string // examples in integrations: "3", "9"
 
 enum KycClientStatus {
   NOT_VERIFIED = "NOT_VERIFIED",
@@ -434,33 +551,4 @@ enum KycClientStatus {
   FROZEN = "FROZEN",
   ARREST = "ARREST"
 }
-
-interface TestQuestion {
-  id: string;
-  title: string;
-  answers: TestAnswer[];
-}
-
-interface TestAnswer {
-  id: number; // serialized from Java Long
-  title: string;
-  correct: boolean;
-}
-
 ```
-
-## Common validation errors
-
-### Missing required field
-
-If a field marked as required is missing or empty, the request fails Java bean validation.
-
-### Missing Belarus personal number
-
-For Belarus registration country (`112`), `personalNumber` is required.
-
-Error message: `Personal number must not be empty for registration country BLR`
-
-### Wrong crypto test answers
-
-Error message: `Wrong answers to crypto test`
