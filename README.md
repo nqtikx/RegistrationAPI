@@ -1,4 +1,4 @@
-# Registration API Guide
+# WhiteBird Registration API Guide
 
 ## Purpose
 
