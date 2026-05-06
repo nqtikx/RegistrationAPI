@@ -73,31 +73,31 @@ Use the response `id` as the WhiteBird `clientId` for status checks, crypto test
 
 | Name | Type | Required | Description |
 | --- | --- | --- | --- |
-| `email` | `string` | Yes | Client email (`@NotEmpty`). |
-| `phone` | `string` | Yes | Client phone (`@NotEmpty`). |
-| `firstNameRu` | `string` | Yes | First name in Cyrillic (`@NotEmpty`). |
-| `lastNameRu` | `string` | Yes | Last name in Cyrillic (`@NotEmpty`). |
-| `patronymicRu` | `string` | Yes | Patronymic in Cyrillic (`@NotEmpty`). |
-| `firstName` | `string` | Yes | First name in Latin (`@NotEmpty`). |
-| `lastName` | `string` | Yes | Last name in Latin (`@NotEmpty`). |
-| `residence` | `string` | Yes | Residence country code (`@NotEmpty`). |
-| `placeOfBirth` | `string` | Yes | Place of birth (`@NotEmpty`). |
+| `email` | `string` | Yes | Client email. |
+| `phone` | `string` | Yes | Client phone. |
+| `firstNameRu` | `string` | Yes | First name in Cyrillic. |
+| `lastNameRu` | `string` | Yes | Last name in Cyrillic. |
+| `patronymicRu` | `string` | Yes | Patronymic in Cyrillic. |
+| `firstName` | `string` | Yes | First name in Latin. |
+| `lastName` | `string` | Yes | Last name in Latin. |
+| `residence` | `string` | Yes | Residence country code. |
+| `placeOfBirth` | `string` | Yes | Place of birth. |
 | `birthDate` | `string` | No | Birth date in `YYYY-MM-DD` (mapped to `LocalDate`). |
-| `registrationCountry` | `string` | Yes | Registration country code (`@NotEmpty`). |
-| `registrationRegion` | `string` | Yes | Registration region/state (`@NotEmpty`). |
-| `residenceDistrict` | `string` | Yes | Registration district field (`@NotEmpty`). |
-| `registrationCity` | `string` | Yes | Registration city/locality (`@NotEmpty`). |
-| `registrationStreet` | `string` | Yes | Registration street (`@NotEmpty`). |
-| `registrationHouseAndFlat` | `string` | Yes | House/flat part of registration address (`@NotEmpty`). |
-| `identityDocType` | `string` | Yes | Identity document type (`@NotEmpty`). |
+| `registrationCountry` | `string` | Yes | Registration country code. |
+| `registrationRegion` | `string` | Yes | Registration region/state. |
+| `residenceDistrict` | `string` | Yes | Registration district field. |
+| `registrationCity` | `string` | Yes | Registration city/locality. |
+| `registrationStreet` | `string` | Yes | Registration street. |
+| `registrationHouseAndFlat` | `string` | Yes | House/flat part of registration address. |
+| `identityDocType` | `string` | Yes | Identity document type. |
 | `identityDocIssueDate` | `string` | No | Document issue date string. |
 | `identityDocExpireDate` | `string` | No | Document expiry date string. |
-| `identityDocNumber` | `string` | Yes | Identity document number (`@NotEmpty`). |
-| `identityDocIssuer` | `string` | Yes | Identity document issuer (`@NotEmpty`). |
+| `identityDocNumber` | `string` | Yes | Identity document number. |
+| `identityDocIssuer` | `string` | Yes | Identity document issuer. |
 | `personalNumber` | `string` | Conditional | Required when `registrationCountry` contains `112` (Belarus). |
-| `postCode` | `string` | Yes | Postal code (`@NotEmpty`). |
-| `gender` | `string` | Yes | Gender value (`@NotEmpty`), e.g. `муж`, `жен`. |
-| `nationality` | `string` | Yes | Nationality country code (`@NotEmpty`). |
+| `postCode` | `string` | Yes | Postal code. |
+| `gender` | `string` | Yes | Gender value, e.g. `муж`, `жен`. |
+| `nationality` | `string` | Yes | Nationality country code. |
 | `notUSTaxPayer` | `boolean` | No | Consent flag for non-US taxpayer declaration. |
 | `exchangeInPersonalInterests` | `boolean` | No | Consent flag for personal-interest exchange declaration. |
 | `agreedWithOffer` | `boolean` | No | Consent flag for WhiteBird public offer. |
@@ -428,8 +428,8 @@ Use the response `id` as `clientId` for token generation and subsequent KYC-rela
 
 | Name | Type | Required | Description |
 | --- | --- | --- | --- |
-| `email` | `string` | Yes | Client email (`@NotEmpty`). |
-| `phone` | `string` | Yes | Client phone (`@NotEmpty`). |
+| `email` | `string` | Yes | Client email. |
+| `phone` | `string` | Yes | Client phone. |
 | `merchantId` | `string` | No | Optional merchant id used in OTP registration flow, not required for backend `x-api-key` flow. |
 | `externalClientId` | `string` | No | Merchant-side external client identifier. |
 | `agreedWithOffer` | `boolean` | No | Offer-agreement flag passed to registration service. |
