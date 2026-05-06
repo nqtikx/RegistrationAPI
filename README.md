@@ -52,8 +52,6 @@ Use the response `id` as the WhiteBird `clientId` for status checks, crypto test
   "notUSTaxPayer": true,
   "exchangeInPersonalInterests": true,
   "agreedWithOffer": true,
-  "externalClientId": "partner-client-123",
-  "isPotentialDrop": false
 }
 ```
 
@@ -187,25 +185,108 @@ Use the response to render the test UI or skip test step if `cryptoTestRequired=
 
 **Headers**
 - `x-api-key: {{x-api-key}}`
-- `externalClientId: {{externalClientId}}` (optional)
 
 **Response**
 ```json
 {
-  "cryptoTestRequired": true,
-  "questions": [
-    {
-      "id": "1",
-      "title": "Question text",
-      "answers": [
+    "cryptoTestRequired": true,
+    "questions": [
         {
-          "id": 10,
-          "title": "Answer text",
-          "correct": true
+            "id": "1",
+            "title": "Что такое криптовалюта?",
+            "answers": [
+                {
+                    "id": 1,
+                    "title": "Зашифрованная валюта госбанка.",
+                    "correct": false
+                },
+                {
+                    "id": 2,
+                    "title": "Биткоин, иной цифровой знак (токен), используемый в международном обороте в качестве универсального средства обмена.",
+                    "correct": true
+                },
+                {
+                    "id": 3,
+                    "title": "Международная платежная система.",
+                    "correct": false
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "title": "Пожалуйста, укажите верное утверждение",
+            "answers": [
+                {
+                    "id": 4,
+                    "title": "Приобретение токенов может привести к полной потере денежных средств в том числе в результате волатильности стоимости токенов, совершения противоправных действий, технических сбоев (ошибок).",
+                    "correct": true
+                },
+                {
+                    "id": 5,
+                    "title": "Приобретение токенов гарантирует полную сохранность денежных средств.",
+                    "correct": false
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "title": "Чем определяется цена Биткоина?",
+            "answers": [
+                {
+                    "id": 7,
+                    "title": "Цену устанавливают разработчики Биткоина.",
+                    "correct": false
+                },
+                {
+                    "id": 8,
+                    "title": "Цена зависит от стоимости барреля нефти на биржах.",
+                    "correct": false
+                },
+                {
+                    "id": 9,
+                    "title": "Спросом и предложением на рынке.",
+                    "correct": true
+                }
+            ]
+        },
+        {
+            "id": "4",
+            "title": "Биткоин является:",
+            "answers": [
+                {
+                    "id": 10,
+                    "title": "Криптовалютой, обеспеченной долларом США.",
+                    "correct": false
+                },
+                {
+                    "id": 11,
+                    "title": "Необеспеченной криптовалютой.",
+                    "correct": true
+                },
+                {
+                    "id": 12,
+                    "title": "Криптовалютой, обеспеченной золотом.",
+                    "correct": false
+                }
+            ]
+        },
+        {
+            "id": "5",
+            "title": "Пожалуйста, укажите верное утверждение",
+            "answers": [
+                {
+                    "id": 13,
+                    "title": "Биткоин является официальным расчетным (платежным) средством на территории РБ за который можно приобретать товары, работы услуги.",
+                    "correct": false
+                },
+                {
+                    "id": 14,
+                    "title": "Биткоин не является расчетным (платежным) средством на территории РБ.",
+                    "correct": true
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }
 ```
 
@@ -256,22 +337,18 @@ Use the response `accepted` to detect whether the update was applied (`true`) or
 
 **Headers**
 - `x-api-key: {{x-api-key}}`
-- `externalClientId: {{externalClientId}}` (optional)
 
 **Request**
 ```json
 {
-  "clientId": "0d58e7ec-0369-48d7-9804-90c6b23a52be",
-  "answers": {
-    "1": 10,
-    "2": 20,
-    "3": 30,
-    "4": 40,
-    "5": 50
-  },
-  "notUSTaxPayer": true,
-  "agreedWithOffer": true,
-  "exchangeInPersonalInterests": true
+    "clientId": "{{clientId}}",
+    "answers": {
+        "1": 2,
+        "2": 4,
+        "3": 9,
+        "4": 11,
+        "5": 14
+    }
 }
 ```
 
@@ -327,9 +404,8 @@ Use the response `id` as `clientId` for token generation and subsequent KYC-rela
 **Request**
 ```json
 {
-  "email": "client@example.com",
-  "phone": "+375297778899",
-  "externalClientId": "partner-client-123",
+  "email": "n.soldatov@whitebird.by",
+  "phone": "+375295805525",
   "agreedWithOffer": true
 }
 ```
@@ -387,8 +463,7 @@ Use the response tokens to initialize SDK session for the resolved `clientId`.
 **Request**
 ```json
 {
-  "clientId": "0d58e7ec-0369-48d7-9804-90c6b23a52be",
-  "externalClientId": "partner-client-123"
+    "clientId": "{{clientId}}"
 }
 ```
 
@@ -437,7 +512,6 @@ Use it when agreement data is collected after initial registration and must be p
 
 **Headers**
 - `x-api-key: {{x-api-key}}`
-- `externalClientId: {{externalClientId}}` (optional)
 
 **Request**
 ```json
@@ -492,19 +566,18 @@ Use the response for compliance flows where personal number retrieval is require
 
 **Headers**
 - `x-api-key: {{x-api-key}}`
-- `externalClientId: {{externalClientId}}` (optional)
 
 **Request**
 ```json
 {
-  "clientId": "0d58e7ec-0369-48d7-9804-90c6b23a52be"
+  "clientId": "{{clientId}}"
 }
 ```
 
 **Response**
 ```json
 {
-  "personalNumber": "3029120H059PB9"
+    "personalNumber": "6685261B729PB7"
 }
 ```
 
@@ -533,21 +606,3 @@ Use the response for compliance flows where personal number retrieval is require
 | --- | --- | --- |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this endpoint (`KYC_GET_PERSONAL_NUMBER_EP`). |
-
-## Data Dictionaries
-
-```typescript
-type Gender = string // examples in existing integrations: "муж", "жен"
-
-type CountryCode = string // numeric ISO 3166-1 code, e.g. "112", "643"
-
-type DocType = string // examples in integrations: "3", "9"
-
-enum KycClientStatus {
-  NOT_VERIFIED = "NOT_VERIFIED",
-  PENDING = "PENDING",
-  VERIFIED = "VERIFIED",
-  FROZEN = "FROZEN",
-  ARREST = "ARREST"
-}
-```
