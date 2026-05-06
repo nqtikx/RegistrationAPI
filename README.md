@@ -6,8 +6,6 @@ This guide describes Backend-to-Backend registration APIs for partners that act 
 
 If the partner already has the required personal identity document (PID) data, WhiteBird can receive this data from the partner instead of collecting it directly from the user.
 
-All requests are authorized with the `x-api-key` header.
-
 ## API flows
 
 | Flow | Endpoint sequence | Use case |
@@ -17,14 +15,6 @@ All requests are authorized with the `x-api-key` header.
 | Crypto test for BY residents | `GET /api/v2/kyc/merchant/client/crypto-test` -> `POST /api/v2/kyc/merchant/client/crypto-test` | Endpoint returns test questions for residents that require crypto test |
 | SDK light registration | `POST /api/v2/auth/merchant/client/register` | Partner creates a client without full KYC data |
 | SDK token generation | `POST /api/v2/auth/merchant/client/token/generate` | Partner receives SDK access tokens for a registered client |
-
-## Common headers
-
-| Header | Required | Description |
-|---|---|---|
-| `x-api-key` | Yes | Merchant API key used for Backend-to-Backend authorization |
-
-> `externalClientId` is not a common header for all endpoints. Depending on the endpoint, it can be passed in the request body, as a header, or as a query parameter. See each endpoint section for details.
 
 ## 1. Full KYC registration
 
