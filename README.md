@@ -387,7 +387,7 @@ Use the response to decide whether client can proceed to operations or must comp
   </tbody>
 </table>
 
-### Params
+**Params**
 
 <table width="100%">
   <thead>
@@ -614,7 +614,7 @@ Use the response to render the test UI or skip test step if `cryptoTestRequired=
   </tbody>
 </table>
 
-### Params
+**Params**
 
 <table width="100%">
   <thead>
