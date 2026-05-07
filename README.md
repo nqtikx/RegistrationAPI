@@ -63,63 +63,285 @@ Use the response `id` as the WhiteBird `clientId` for status checks, crypto test
 }
 ```
 
-### Headers
+**Headers**
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `x-api-key` | `string` | Yes | Authenticates merchant backend request for KYC registration endpoints. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates merchant backend request for KYC registration endpoints.</td>
+    </tr>
+  </tbody>
+</table>
 
-### Request
+**Request**
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `email` | `string` | Yes | Client email. |
-| `phone` | `string` | Yes | Client phone. |
-| `firstNameRu` | `string` | Yes | First name in Cyrillic. |
-| `lastNameRu` | `string` | Yes | Last name in Cyrillic. |
-| `patronymicRu` | `string` | Yes | Patronymic in Cyrillic. |
-| `firstName` | `string` | Yes | First name in Latin. |
-| `lastName` | `string` | Yes | Last name in Latin. |
-| `residence` | `string` | Yes | Residence country code. |
-| `placeOfBirth` | `string` | Yes | Place of birth. |
-| `birthDate` | `string` | No | Birth date in `YYYY-MM-DD` (mapped to `LocalDate`). |
-| `registrationCountry` | `string` | Yes | Registration country code. |
-| `registrationRegion` | `string` | Yes | Registration region/state. |
-| `residenceDistrict` | `string` | Yes | Registration district field. |
-| `registrationCity` | `string` | Yes | Registration city/locality. |
-| `registrationStreet` | `string` | Yes | Registration street. |
-| `registrationHouseAndFlat` | `string` | Yes | House/flat part of registration address. |
-| `identityDocType` | `string` | Yes | Identity document type. |
-| `identityDocIssueDate` | `string` | No | Document issue date string. |
-| `identityDocExpireDate` | `string` | No | Document expiry date string. |
-| `identityDocNumber` | `string` | Yes | Identity document number. |
-| `identityDocIssuer` | `string` | Yes | Identity document issuer. |
-| `personalNumber` | `string` | Conditional | Required when `registrationCountry` contains `112` (Belarus). |
-| `postCode` | `string` | Yes | Postal code. |
-| `gender` | `string` | Yes | Gender value, e.g. `муж`, `жен`. |
-| `nationality` | `string` | Yes | Nationality country code. |
-| `notUSTaxPayer` | `boolean` | No | Consent flag for non-US taxpayer declaration. |
-| `exchangeInPersonalInterests` | `boolean` | No | Consent flag for personal-interest exchange declaration. |
-| `agreedWithOffer` | `boolean` | No | Consent flag for WhiteBird public offer. |
-| `files` | `array of string` | No | Optional list of file references stored with client KYC data. |
-| `externalClientId` | `string` | No | Merchant-side external client identifier. |
-| `isPotentialDrop` | `boolean` | No | Optional risk marker propagated to CRM processing. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">email</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Client email.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">phone</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Client phone.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">firstNameRu</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>First name in Cyrillic.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">lastNameRu</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Last name in Cyrillic.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">patronymicRu</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Patronymic in Cyrillic.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">firstName</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>First name in Latin.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">lastName</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Last name in Latin.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">residence</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Residence country code.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">placeOfBirth</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Place of birth.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">birthDate</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Birth date in YYYY-MM-DD (mapped to LocalDate).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">registrationCountry</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Registration country code.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">registrationRegion</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Registration region/state.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">residenceDistrict</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Registration district field.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">registrationCity</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Registration city/locality.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">registrationStreet</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Registration street.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">registrationHouseAndFlat</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>House/flat part of registration address.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">identityDocType</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Identity document type.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">identityDocIssueDate</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Document issue date string.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">identityDocExpireDate</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Document expiry date string.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">identityDocNumber</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Identity document number.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">identityDocIssuer</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Identity document issuer.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">personalNumber</td>
+      <td>string</td>
+      <td>Conditional</td>
+      <td>Required when registrationCountry contains 112 (Belarus).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">postCode</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Postal code.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">gender</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Gender value, e.g. муж, жен.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">nationality</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Nationality country code.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">notUSTaxPayer</td>
+      <td>boolean</td>
+      <td>No</td>
+      <td>Consent flag for non-US taxpayer declaration.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeInPersonalInterests</td>
+      <td>boolean</td>
+      <td>No</td>
+      <td>Consent flag for personal-interest exchange declaration.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">agreedWithOffer</td>
+      <td>boolean</td>
+      <td>No</td>
+      <td>Consent flag for WhiteBird public offer.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">files</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Optional list of file references stored with client KYC data.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">externalClientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Merchant-side external client identifier.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">isPotentialDrop</td>
+      <td>boolean</td>
+      <td>No</td>
+      <td>Optional risk marker propagated to CRM processing.</td>
+    </tr>
+  </tbody>
+</table>
 
-### Response
+**Response**
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `id` | `string` | WhiteBird client id created/linked during registration. |
-| `status` | `string` | Client status after registration. Allowed values: `NOT_VERIFIED`, `PENDING`, `VERIFIED`, `FROZEN`, `ARREST`. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">id</td>
+      <td>string</td>
+      <td>WhiteBird client id created/linked during registration.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">status</td>
+      <td>string</td>
+      <td>Client status after registration. Allowed values: NOT_VERIFIED, PENDING, VERIFIED, FROZEN, ARREST.</td>
+    </tr>
+  </tbody>
+</table>
 
-### Errors
+**Errors**
 
-| Name | Code | Description |
-| --- | --- | --- |
-| `400 ValidationException` | BUSINESS | One or more required fields are missing/empty, or validation rules fail. |
-| `400 ValidationException` | BUSINESS | `personalNumber` is missing for Belarus registration country (`112`). |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this endpoint (`KYC_REGISTER_EP`). |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 ValidationException</td>
+      <td>BUSINESS</td>
+      <td>One or more required fields are missing/empty, or validation rules fail.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 ValidationException</td>
+      <td>BUSINESS</td>
+      <td>personalNumber is missing for Belarus registration country (112).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this endpoint.</td>
+    </tr>
+  </tbody>
+</table>
 
 ## 2) Client Status
 
@@ -144,36 +366,111 @@ Use the response to decide whether client can proceed to operations or must comp
 "VERIFIED"
 ```
 
-### Headers
+**Headers**
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `x-api-key` | `string` | Yes | Authenticates merchant backend request for status checks. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates merchant backend request for status checks.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Params
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `externalUserId` | `string` | No | Merchant-side external id used as optional additional client validation key. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">externalUserId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Merchant-side external id used as optional additional client validation key.</td>
+    </tr>
+  </tbody>
+</table>
 
-### Request
+**Request**
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `clientId` | `string` | Yes | WhiteBird client id returned by registration. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">clientId</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>WhiteBird client id returned by registration.</td>
+    </tr>
+  </tbody>
+</table>
 
-### Response
+**Response**
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `status` | `string` | KYC status string from backend. Possible values include `NOT_VERIFIED`, `PENDING`, `VERIFIED`, `FROZEN`, `ARREST`. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">status</td>
+      <td>string</td>
+      <td>KYC status string from backend. Possible values include NOT_VERIFIED, PENDING, VERIFIED, FROZEN, ARREST.</td>
+    </tr>
+  </tbody>
+</table>
 
-### Errors
+**Errors**
 
-| Name | Code | Description |
-| --- | --- | --- |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this endpoint (`KYC_GET_CLIENT_STATUS_EP`). |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this endpoint.</td>
+    </tr>
+  </tbody>
+</table>
 
 ## 3) Crypto Test
 
@@ -290,44 +587,152 @@ Use the response to render the test UI or skip test step if `cryptoTestRequired=
 }
 ```
 
-### Headers
+**Headers**
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `x-api-key` | `string` | Yes | Authenticates merchant backend request for crypto test endpoints. |
-| `externalClientId` | `string` | No | Merchant-side external client id for additional client lookup. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates merchant backend request for crypto test endpoints.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">externalClientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Merchant-side external client id for additional client lookup.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Params
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `clientId` | `string` | Yes | WhiteBird client id. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">clientId</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>WhiteBird client id.</td>
+    </tr>
+  </tbody>
+</table>
 
-### Request
+**Request**
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `body` | `none` | - | GET endpoint without request body. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">body</td>
+      <td>none</td>
+      <td>-</td>
+      <td>GET endpoint without request body.</td>
+    </tr>
+  </tbody>
+</table>
 
-### Response
+**Response**
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `cryptoTestRequired` | `boolean` | Indicates whether client must pass crypto test. |
-| `questions` | `array of objects` | Test questions list, returned when `cryptoTestRequired=true`. |
-| `questions[].id` | `string` | Question identifier. |
-| `questions[].title` | `string` | Question text. |
-| `questions[].answers` | `array of objects` | Answer options list. |
-| `questions[].answers[].id` | `number` | Answer identifier (`Long` serialized as number). |
-| `questions[].answers[].title` | `string` | Answer text. |
-| `questions[].answers[].correct` | `boolean` | Correct-answer marker in backend response payload. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTestRequired</td>
+      <td>boolean</td>
+      <td>Indicates whether client must pass crypto test.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">questions</td>
+      <td>array of objects</td>
+      <td>Test questions list, returned when cryptoTestRequired=true.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">questions[].id</td>
+      <td>string</td>
+      <td>Question identifier.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">questions[].title</td>
+      <td>string</td>
+      <td>Question text.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">questions[].answers</td>
+      <td>array of objects</td>
+      <td>Answer options list.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">questions[].answers[].id</td>
+      <td>number</td>
+      <td>Answer identifier (Long serialized as number).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">questions[].answers[].title</td>
+      <td>string</td>
+      <td>Answer text.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">questions[].answers[].correct</td>
+      <td>boolean</td>
+      <td>Correct-answer marker in backend response payload.</td>
+    </tr>
+  </tbody>
+</table>
 
-### Errors
+**Errors**
 
-| Name | Code | Description |
-| --- | --- | --- |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this endpoint (`KYC_CRYPTO_TEST_EP`). |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this endpoint.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Step 4. Submit crypto-test answers
 Use this endpoint to submit crypto test answers and optionally update legal agreement flags in the same call.
@@ -359,36 +764,125 @@ Use the response `accepted` to detect whether the update was applied (`true`) or
 }
 ```
 
-### Headers
+**Headers**
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `x-api-key` | `string` | Yes | Authenticates merchant backend request for crypto test endpoints. |
-| `externalClientId` | `string` | No | Merchant-side external client id for additional client lookup. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates merchant backend request for crypto test endpoints.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">externalClientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Merchant-side external client id for additional client lookup.</td>
+    </tr>
+  </tbody>
+</table>
 
-### Request
+**Request**
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `clientId` | `string` | Yes | WhiteBird client id. |
-| `answers` | `object` | Yes | Map of question id to answer id (`Map<Long, Long>`). |
-| `notUSTaxPayer` | `boolean` | No | Optional consent update flag. |
-| `agreedWithOffer` | `boolean` | No | Optional offer-agreement update flag. |
-| `exchangeInPersonalInterests` | `boolean` | No | Optional personal-interests update flag. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">clientId</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>WhiteBird client id.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">answers</td>
+      <td>object</td>
+      <td>Yes</td>
+      <td>Map of question id to answer id (Map<Long, Long>).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">notUSTaxPayer</td>
+      <td>boolean</td>
+      <td>No</td>
+      <td>Optional consent update flag.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">agreedWithOffer</td>
+      <td>boolean</td>
+      <td>No</td>
+      <td>Optional offer-agreement update flag.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeInPersonalInterests</td>
+      <td>boolean</td>
+      <td>No</td>
+      <td>Optional personal-interests update flag.</td>
+    </tr>
+  </tbody>
+</table>
 
-### Response
+**Response**
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `accepted` | `boolean` | `true` when crypto test is applied; `false` for non-resident clients. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">accepted</td>
+      <td>boolean</td>
+      <td>true when crypto test is applied; false for non-resident clients.</td>
+    </tr>
+  </tbody>
+</table>
 
-### Errors
+**Errors**
 
-| Name | Code | Description |
-| --- | --- | --- |
-| `400 ValidationException` | BUSINESS | Wrong answers to crypto test. |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this endpoint (`KYC_CRYPTO_TEST_EP`). |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 ValidationException</td>
+      <td>BUSINESS</td>
+      <td>Wrong answers to crypto test.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this endpoint.</td>
+    </tr>
+  </tbody>
+</table>
 
 ## 4) SDK Light Registration
 
@@ -418,36 +912,124 @@ Use the response `id` as `clientId` for token generation and subsequent KYC-rela
 }
 ```
 
-### Headers
+**Headers**
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `x-api-key` | `string` | Yes | Authenticates merchant backend request for auth registration endpoint. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates merchant backend request for auth registration endpoint.</td>
+    </tr>
+  </tbody>
+</table>
 
-### Request
+**Request**
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `email` | `string` | Yes | Client email. |
-| `phone` | `string` | Yes | Client phone. |
-| `merchantId` | `string` | No | Optional merchant id used in OTP registration flow, not required for backend `x-api-key` flow. |
-| `externalClientId` | `string` | No | Merchant-side external client identifier. |
-| `agreedWithOffer` | `boolean` | No | Offer-agreement flag passed to registration service. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">email</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Client email.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">phone</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Client phone.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">merchantId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Optional merchant id used in OTP registration flow, not required for backend x-api-key flow.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">externalClientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Merchant-side external client identifier.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">agreedWithOffer</td>
+      <td>boolean</td>
+      <td>No</td>
+      <td>Offer-agreement flag passed to registration service.</td>
+    </tr>
+  </tbody>
+</table>
 
-### Response
+**Response**
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `id` | `string` | WhiteBird client id created/linked in merchant context. |
-| `status` | `string` | Initial client status (typically `NOT_VERIFIED`). |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">id</td>
+      <td>string</td>
+      <td>WhiteBird client id created/linked in merchant context.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">status</td>
+      <td>string</td>
+      <td>Initial client status (typically NOT_VERIFIED).</td>
+    </tr>
+  </tbody>
+</table>
 
-### Errors
+**Errors**
 
-| Name | Code | Description |
-| --- | --- | --- |
-| `400 ValidationException` | BUSINESS | Required registration field validation failed. |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this endpoint (`AUTH_REGISTER_EP`). |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 ValidationException</td>
+      <td>BUSINESS</td>
+      <td>Required registration field validation failed.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this endpoint.</td>
+    </tr>
+  </tbody>
+</table>
 
 ## 5) SDK Token Generation
 
@@ -475,32 +1057,101 @@ Use the response tokens to initialize SDK session for the resolved `clientId`.
 }
 ```
 
-### Headers
+**Headers**
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `x-api-key` | `string` | Yes | Authenticates merchant backend request for token generation endpoint. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates merchant backend request for token generation endpoint.</td>
+    </tr>
+  </tbody>
+</table>
 
-### Request
+**Request**
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `clientId` | `string` | Yes | WhiteBird client id to generate token for. |
-| `externalClientId` | `string` | No | Merchant-side external client identifier used for additional client validation. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">clientId</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>WhiteBird client id to generate token for.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">externalClientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Merchant-side external client identifier used for additional client validation.</td>
+    </tr>
+  </tbody>
+</table>
 
-### Response
+**Response**
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `token` | `string` | OAuth access token for SDK session. |
-| `refreshToken` | `string \| null` | OAuth refresh token; can be `null`. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">token</td>
+      <td>string</td>
+      <td>OAuth access token for SDK session.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">refreshToken</td>
+      <td>string | null</td>
+      <td>OAuth refresh token; can be null.</td>
+    </tr>
+  </tbody>
+</table>
 
-### Errors
+**Errors**
 
-| Name | Code | Description |
-| --- | --- | --- |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this endpoint (`AUTH_GET_TOKEN_EP`). |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this endpoint.</td>
+    </tr>
+  </tbody>
+</table>
 
 ## 6) Optional KYC Support Endpoints
 
@@ -528,32 +1179,116 @@ Use it when agreement data is collected after initial registration and must be p
 "OK"
 ```
 
-### Headers
+**Headers**
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `x-api-key` | `string` | Yes | Authenticates merchant backend request for agreement update endpoint. |
-| `externalClientId` | `string` | No | Merchant-side external client identifier used for additional client lookup. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates merchant backend request for agreement update endpoint.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">externalClientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Merchant-side external client identifier used for additional client lookup.</td>
+    </tr>
+  </tbody>
+</table>
 
-### Request
+**Request**
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `clientId` | `string` | Yes | WhiteBird client id. |
-| `notUSTaxPayer` | `boolean` | No | Non-US taxpayer agreement flag. |
-| `agreedWithOffer` | `boolean` | No | WhiteBird public offer agreement flag. |
-| `exchangeInPersonalInterests` | `boolean` | No | Exchange-in-personal-interests agreement flag. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">clientId</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>WhiteBird client id.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">notUSTaxPayer</td>
+      <td>boolean</td>
+      <td>No</td>
+      <td>Non-US taxpayer agreement flag.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">agreedWithOffer</td>
+      <td>boolean</td>
+      <td>No</td>
+      <td>WhiteBird public offer agreement flag.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeInPersonalInterests</td>
+      <td>boolean</td>
+      <td>No</td>
+      <td>Exchange-in-personal-interests agreement flag.</td>
+    </tr>
+  </tbody>
+</table>
 
-### Response
+**Response**
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `result` | `string` | Constant string response: `OK`. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">result</td>
+      <td>string</td>
+      <td>Constant string response: OK.</td>
+    </tr>
+  </tbody>
+</table>
 
-### Errors
+**Errors**
 
-| Name | Code | Description |
-| --- | --- | --- |
-| `400 ValidationException` | BUSINESS | Client was not found for provided identifier. |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this endpoint (`KYC_AGREED_OFFER_EP`). |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 ValidationException</td>
+      <td>BUSINESS</td>
+      <td>Client was not found for provided identifier.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this endpoint.</td>
+    </tr>
+  </tbody>
+</table>
