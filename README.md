@@ -474,6 +474,8 @@ Use the response to decide whether client can proceed to operations or must comp
 
 ## 3) Crypto Test
 
+The verification of answers to the crypto test occurs on the partner's side
+
 ### Step 3. Get crypto-test requirements/questions
 Use this endpoint to determine whether the client must pass crypto test and to fetch questions for residents where test is required.
 Use the response to render the test UI or skip test step if `cryptoTestRequired=false`.
