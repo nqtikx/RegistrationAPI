@@ -1,4 +1,4 @@
-# WhiteBird Registration API
+# Registration API
 
 This API is used for merchant backend-to-backend registration and KYC-related actions.
 Use these endpoints to register clients, update legal agreements, and generate SDK tokens without exposing merchant secrets in frontend code.
