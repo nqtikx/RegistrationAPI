@@ -21,6 +21,23 @@ Use the response `id` as the WhiteBird `clientId` for status checks, crypto test
 - `notUSTaxPayer`
 - `exchangeInPersonalInterests`
 
+**identityDocType (DocType)**
+
+Allowed values for `identityDocType`:
+
+```json
+enum DocType {
+    PassportBY = "3",           // паспорт РБ
+    ResidencePermitBY = "6",    // вид на жительство РБ
+    RefugeeCertificateBY = "7", // удостоверение беженца РБ
+    ForeignPassport = "9",      // паспорт иностранца
+    IDCardBY = "15",            // ID-карта РБ
+    ForeignBiometricResidencePermitBY = "16", // биометрический вид на жительство РБ иностранного гражданина
+    RefugeeBiometricResidencePermitBY = "17", // биометрический вид на жительство РБ лица без гражданства
+    Other = "99"                // иное
+}
+```
+
 **Request**
 ```json
 // BY user example
@@ -228,7 +245,7 @@ Use the response `id` as the WhiteBird `clientId` for status checks, crypto test
       <td style="word-break: break-word; white-space: normal;">identityDocType</td>
       <td>string</td>
       <td>Yes</td>
-      <td>Identity document type. See DocType values below.</td>
+      <td>Identity document type. See DocType enum above.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">identityDocIssueDate</td>
@@ -313,60 +330,6 @@ Use the response `id` as the WhiteBird `clientId` for status checks, crypto test
       <td>boolean</td>
       <td>No</td>
       <td>Optional risk marker propagated to CRM processing.</td>
-    </tr>
-  </tbody>
-</table>
-
-**identityDocType (DocType)**
-
-<table width="100%">
-  <thead>
-    <tr>
-      <th width="120">Value</th>
-      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
-      <th width="640">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>3</td>
-      <td style="word-break: break-word; white-space: normal;">PassportBY</td>
-      <td>Паспорт РБ</td>
-    </tr>
-    <tr>
-      <td>6</td>
-      <td style="word-break: break-word; white-space: normal;">ResidencePermitBY</td>
-      <td>Вид на жительство РБ</td>
-    </tr>
-    <tr>
-      <td>7</td>
-      <td style="word-break: break-word; white-space: normal;">RefugeeCertificateBY</td>
-      <td>Удостоверение беженца РБ</td>
-    </tr>
-    <tr>
-      <td>9</td>
-      <td style="word-break: break-word; white-space: normal;">ForeignPassport</td>
-      <td>Паспорт иностранца</td>
-    </tr>
-    <tr>
-      <td>15</td>
-      <td style="word-break: break-word; white-space: normal;">IDCardBY</td>
-      <td>ID-карта РБ</td>
-    </tr>
-    <tr>
-      <td>16</td>
-      <td style="word-break: break-word; white-space: normal;">ForeignBiometricResidencePermitBY</td>
-      <td>Биометрический вид на жительство РБ иностранного гражданина</td>
-    </tr>
-    <tr>
-      <td>17</td>
-      <td style="word-break: break-word; white-space: normal;">RefugeeBiometricResidencePermitBY</td>
-      <td>Биометрический вид на жительство РБ лица без гражданства</td>
-    </tr>
-    <tr>
-      <td>99</td>
-      <td style="word-break: break-word; white-space: normal;">Other</td>
-      <td>Иное</td>
     </tr>
   </tbody>
 </table>
