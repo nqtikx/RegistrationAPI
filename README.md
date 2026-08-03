@@ -26,7 +26,7 @@ Use the response `id` as the WhiteBird `clientId` for status checks, crypto test
 Allowed values for `identityDocType`:
 
 **DocType**
-```json
+```typescript
 enum DocType {
     PassportBY = "3",           // паспорт РБ
     ResidencePermitBY = "6",    // вид на жительство РБ
