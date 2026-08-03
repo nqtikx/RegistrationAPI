@@ -228,7 +228,7 @@ Use the response `id` as the WhiteBird `clientId` for status checks, crypto test
       <td style="word-break: break-word; white-space: normal;">identityDocType</td>
       <td>string</td>
       <td>Yes</td>
-      <td>Identity document type.</td>
+      <td>Identity document type. See DocType values below.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">identityDocIssueDate</td>
@@ -313,6 +313,60 @@ Use the response `id` as the WhiteBird `clientId` for status checks, crypto test
       <td>boolean</td>
       <td>No</td>
       <td>Optional risk marker propagated to CRM processing.</td>
+    </tr>
+  </tbody>
+</table>
+
+**identityDocType (DocType)**
+
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="120">Value</th>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>3</td>
+      <td style="word-break: break-word; white-space: normal;">PassportBY</td>
+      <td>Паспорт РБ</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td style="word-break: break-word; white-space: normal;">ResidencePermitBY</td>
+      <td>Вид на жительство РБ</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td style="word-break: break-word; white-space: normal;">RefugeeCertificateBY</td>
+      <td>Удостоверение беженца РБ</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td style="word-break: break-word; white-space: normal;">ForeignPassport</td>
+      <td>Паспорт иностранца</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td style="word-break: break-word; white-space: normal;">IDCardBY</td>
+      <td>ID-карта РБ</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td style="word-break: break-word; white-space: normal;">ForeignBiometricResidencePermitBY</td>
+      <td>Биометрический вид на жительство РБ иностранного гражданина</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td style="word-break: break-word; white-space: normal;">RefugeeBiometricResidencePermitBY</td>
+      <td>Биометрический вид на жительство РБ лица без гражданства</td>
+    </tr>
+    <tr>
+      <td>99</td>
+      <td style="word-break: break-word; white-space: normal;">Other</td>
+      <td>Иное</td>
     </tr>
   </tbody>
 </table>
@@ -520,10 +574,10 @@ Use the response to render the test UI or skip test step if `cryptoTestRequired=
 **Response**
 ```json
 {
-    "cryptoTestRequired": true,
-    "questions": [
-        {
-            "id": "1",
+  "cryptoTestRequired": true,
+  "questions": [
+    {
+      "id": "1",
             "title": "Что такое криптовалюта?",
             "answers": [
                 {
@@ -583,16 +637,16 @@ Use the response to render the test UI or skip test step if `cryptoTestRequired=
         {
             "id": "4",
             "title": "Биткоин является:",
-            "answers": [
-                {
-                    "id": 10,
+      "answers": [
+        {
+          "id": 10,
                     "title": "Криптовалютой, обеспеченной долларом США.",
                     "correct": false
                 },
                 {
                     "id": 11,
                     "title": "Необеспеченной криптовалютой.",
-                    "correct": true
+          "correct": true
                 },
                 {
                     "id": 12,
@@ -614,10 +668,10 @@ Use the response to render the test UI or skip test step if `cryptoTestRequired=
                     "id": 14,
                     "title": "Биткоин не является расчетным (платежным) средством на территории РБ.",
                     "correct": true
-                }
-            ]
         }
-    ]
+      ]
+    }
+  ]
 }
 ```
 
@@ -781,7 +835,7 @@ Use the response `accepted` to detect whether the update was applied (`true`) or
 ```json
 {
     "clientId": "{{clientId}}",
-    "answers": {
+  "answers": {
         "1": 2,
         "2": 4,
         "3": 9,
