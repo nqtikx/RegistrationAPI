@@ -21,6 +21,10 @@ Use the response `id` as the WhiteBird `clientId` for status checks, crypto test
 - `notUSTaxPayer`
 - `exchangeInPersonalInterests`
 
+**identityDocType (DocType)**
+
+Allowed values for `identityDocType`:
+
 **DocType**
 ```typescript
 enum DocType {
